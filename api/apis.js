@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 const kmeans = require('node-kmeans');
@@ -19,6 +20,16 @@ var apis = {
             if (err)
                 return res.status(400).json({'status' : 'Error'});
 =======
+=======
+
+const kmeans = require('node-kmeans');
+
+=======
+>>>>>>> origin/master
+var apis = {
+    groupOrders : function(req,res) {
+<<<<<<< HEAD
+>>>>>>> commit
         let vectors = new Array();
         var data = req.body.data;
         for (let i = 0 ; i < data.length ; i++) {
@@ -28,6 +39,22 @@ var apis = {
             if (err) {
                 return res.status(400).json('Error');
             }
+<<<<<<< HEAD
+>>>>>>> commit
+=======
+=======
+        var data = req.body.orders;
+        var size = req.body.size;
+
+        let vectors = new Array();
+        for (let i = 0 ; i < data.length ; i++) {
+            vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
+        }
+        const kmeans = require('node-kmeans');
+        kmeans.clusterize(vectors, {k: size}, (err,result) => {
+            if (err)
+                return res.status(400).json({'status' : 'Error'});
+>>>>>>> origin/master
 >>>>>>> commit
             else {
                 var json = result;
@@ -35,8 +62,14 @@ var apis = {
             }
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         
+>>>>>>> commit
+=======
+        
+=======
+>>>>>>> origin/master
 >>>>>>> commit
     },
 
