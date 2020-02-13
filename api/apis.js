@@ -1,5 +1,12 @@
+<<<<<<< HEAD
+=======
+
+const kmeans = require('node-kmeans');
+
+>>>>>>> commit
 var apis = {
     groupOrders : function(req,res) {
+<<<<<<< HEAD
         var data = req.body.orders;
         var size = req.body.size;
 
@@ -11,11 +18,26 @@ var apis = {
         kmeans.clusterize(vectors, {k: size}, (err,result) => {
             if (err)
                 return res.status(400).json({'status' : 'Error'});
+=======
+        let vectors = new Array();
+        var data = req.body.data;
+        for (let i = 0 ; i < data.length ; i++) {
+            vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
+        }
+        kmeans.clusterize(vectors, {k: 3}, (err,result) => {
+            if (err) {
+                return res.status(400).json('Error');
+            }
+>>>>>>> commit
             else {
                 var json = result;
                 return res.status(200).json(json);
             }
         });
+<<<<<<< HEAD
+=======
+        
+>>>>>>> commit
     },
 
     assignDrivers : function(req,res) {
