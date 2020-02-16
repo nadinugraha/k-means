@@ -1,110 +1,63 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
 const kmeans = require('node-kmeans');
 
->>>>>>> commit
+
 var apis = {
     groupOrders : function(req,res) {
-<<<<<<< HEAD
         var data = req.body.orders;
         var size = req.body.size;
-
         let vectors = new Array();
         for (let i = 0 ; i < data.length ; i++) {
             vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
         }
-        const kmeans = require('node-kmeans');
         kmeans.clusterize(vectors, {k: size}, (err,result) => {
             if (err)
                 return res.status(400).json({'status' : 'Error'});
-=======
-=======
 
-const kmeans = require('node-kmeans');
-
-=======
->>>>>>> origin/master
-var apis = {
-    groupOrders : function(req,res) {
-<<<<<<< HEAD
->>>>>>> commit
-        let vectors = new Array();
-        var data = req.body.data;
-        for (let i = 0 ; i < data.length ; i++) {
-            vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
-        }
-        kmeans.clusterize(vectors, {k: 3}, (err,result) => {
-            if (err) {
-                return res.status(400).json('Error');
-            }
-<<<<<<< HEAD
->>>>>>> commit
-=======
-=======
-        var data = req.body.orders;
-        var size = req.body.size;
-
-        let vectors = new Array();
-        for (let i = 0 ; i < data.length ; i++) {
-            vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
-        }
-        const kmeans = require('node-kmeans');
-        kmeans.clusterize(vectors, {k: size}, (err,result) => {
-            if (err)
-                return res.status(400).json({'status' : 'Error'});
->>>>>>> origin/master
->>>>>>> commit
             else {
                 var json = result;
                 return res.status(200).json(json);
             }
         });
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        
->>>>>>> commit
-=======
-        
-=======
->>>>>>> origin/master
->>>>>>> commit
     },
 
     assignDrivers : function(req,res) {
         var data = req.body.orders;
         var drivers = req.body.drivers;
-
-        let vectors = new Array();
-        for (let i = 0 ; i < data.length ; i++) {
-            vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
-        }
-        const kmeans = require('node-kmeans');
-        kmeans.clusterize(vectors, {k: drivers.length}, (err,result) => {
-            if (err)
-                return res.status(400).json({'status' : 'Error'});
-            else {
-                var i = 0;
-                var t = 0;
-                var driversAssigned = [];
-                var ordersAssigned = [];
-                for(i=0;i<result.length;i++) {
-                    ordersAssigned = [];
-                    for(t=0;t<result[i].clusterInd.length;t++) {
-                        ordersAssigned.push({
-                            order_id : data[result[i].clusterInd[t]].order_id
+        if (data.length==0 || drivers.length==0)
+            return res.status(400).json({'message' : 'Error'});
+        else {
+            let vectors = new Array();
+            for (let i = 0 ; i < data.length ; i++) {
+                vectors[i] = [ data[i]['longitude_to'] , data[i]['latitude_to']];
+            }
+            kmeans.clusterize(vectors, {k: drivers.length}, (err,result) => {
+                if (err) {
+                    return res.status(400).json({'message' : 'Error'});
+                }
+                else {
+                    var i = 0;
+                    var t = 0;
+                    var driversAssigned = [];
+                    var ordersAssigned = [];
+                    for(i=0;i<result.length;i++) {
+                        ordersAssigned = [];
+                        for(t=0;t<result[i].clusterInd.length;t++) {
+                            ordersAssigned.push({
+                                order_id : data[result[i].clusterInd[t]].order_id,
+                                recipient_name : data[result[i].clusterInd[t]].recipient_name,
+                                recipient_full_address : data[result[i].clusterInd[t]].recipient_full_address
+                            });
+                        }
+                        driversAssigned.push({
+                            driver_id : drivers[i].driver_id,
+                            name : drivers[i].name,
+                            ordersAssigned : ordersAssigned
                         });
                     }
-                    driversAssigned.push({
-                        driver_id : drivers[i].driver_id,
-                        ordersAssigned : ordersAssigned
-                    });
+                    return res.status(200).json(driversAssigned);
                 }
-                return res.status(200).json(driversAssigned);
-            }
-        });
+            });
+        }
     }
 }
 
