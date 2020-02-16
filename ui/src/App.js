@@ -166,7 +166,8 @@ export default class App extends React.Component {
       driverIndexSelected : 0,
 
       strDriversSelected : '',
-      strOrdersSelected : ''
+      strOrdersSelected : '',
+      kmeansresult : []
     });
   }
 
