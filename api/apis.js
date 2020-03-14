@@ -1,6 +1,5 @@
 const kmeans = require('node-kmeans');
 
-
 var apis = {
     groupOrders : function(req,res) {
         var data = req.body.orders;
